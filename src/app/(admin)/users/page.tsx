@@ -1,6 +1,5 @@
 'use client'
 import { User } from 'lucide-react'
-import UserFilters from '@/components/admin/users/Filters';
 import UsersTable from '@/components/admin/users/UsersTable';
 import Link from 'next/link';
 

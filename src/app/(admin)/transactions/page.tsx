@@ -1,5 +1,4 @@
 import TransactionsTable from '@/components/admin/transactions/TransactionsTable'
-import TransactionFilters from '@/components/admin/transactions/Filters'
 import { DollarSign } from 'lucide-react'
 import Link from 'next/link';
 
@@ -36,8 +35,6 @@ export default async function TransactionsPage({
             </div>
           </div>
         </div>
-
-        <TransactionFilters /> 
       </div>
 
       <TransactionsTable status={status} date={date} />
