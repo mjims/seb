@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #eef1f9;
+  --foreground: #171717;
+  --top-bar-height: 65px;
+  --side-bg: #faf9f8;
+  --side-border: linear-gradient(135deg,#dc2626,#7c3aed);
+  --sebpay-gradiant-color: linear-gradient(135deg,#dc2626,#7c3aed);
+  --sebpay-gradient-hover: linear-gradient(35deg,#dc2626,#7c3aed);
+  --route-police: 14px;
+  --link-simple-border:#ccc;
+  --link-simple-bg-hover: #f8f6f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #eef1f9;
+    --foreground: rgba(0,0,0,0.55);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.border-gradiant {
+  border-image: linear-gradient(135deg,#dc2626,#7c3aed);
+  border-image-slice: 1;
+}
+.border-gradiant-y {
+  border-image: linear-gradient(240deg,#dc2626,#7c3aed);
+  border-image-slice: 1;
+}
+.route .route-item:after {
+  content: '/';
+  padding: 0 1px;
+}
