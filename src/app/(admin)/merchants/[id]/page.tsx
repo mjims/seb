@@ -12,10 +12,11 @@ export default async function MerchantDetailPage({
   const { id } = await params;
   const merchant = await getMerchantById(id)
 
+  if(!merchant) return notFound();
+
   return (
      <div className="p-6 space-y-6">      
       
-      { !merchant ? notFound(): ''}
       <MerchantDetailHeader merchant={merchant} />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

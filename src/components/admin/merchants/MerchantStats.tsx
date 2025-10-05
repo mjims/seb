@@ -65,7 +65,7 @@ export default function MerchantStats({ merchantId }: MerchantStatsProps) {
               <p className="font-medium">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
-                  currency: 'EUR'
+                  currency: 'cfa'
                 }).format(stats.totalRevenue)}
               </p>
             </div>

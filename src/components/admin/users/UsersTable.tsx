@@ -57,7 +57,7 @@ export default function UsersTable() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                   {user.profile?.kyc_status ? <UserStatusBadge status={user.profile?.kyc_status } /> : "N/A"}
+                   {user.profile?.kyc_status ? user.profile.kyc_status: "N/A"}
                 </td>
                 <td className='px-6 py-4 whitespace-nowrap'>
                   <a href={`users/${ user.id}`}>Détails</a>

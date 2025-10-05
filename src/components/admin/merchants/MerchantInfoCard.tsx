@@ -96,7 +96,7 @@ export default function MerchantInfoCard({ merchant }: MerchantInfoCardProps) {
               <p className="font-medium">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
-                  currency: 'fcfa'
+                  currency: 'cfa'
                 }).format(merchant.real_balance)}
               </p>
             </div>
