@@ -30,14 +30,14 @@ export default function PaymentLinksTable() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Début</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Expire le</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lien</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th> */}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {paymentLinks?.results.map((link) => (
               <tr key={link.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {i}
+                  {i++}
                   {/* <Link href={`/payments/${link.id}`} className="font-medium text-primary hover:underline">
                     {link.id}
                   </Link> */}
@@ -64,15 +64,16 @@ export default function PaymentLinksTable() {
                     <CopyButton value={link.image} />
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                {/* <td className="px-6 py-4 whitespace-nowrap space-x-2">
                   <Link
                     href={`/admin/payments/${link.id}`}
                     className={buttonVariants({ variant: 'outline', size: 'sm' })}
                   >
                     Gérer
                   </Link>
-                </td>
+                </td> */}
               </tr>
+              
             ))}
           </tbody>
         </table>
