@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import { CopyButton } from '@/components/ui/copy-button'
 import { useQuery } from '@tanstack/react-query'
+import { DateFormat } from '@/shared/config'
 
 export default function PaymentLinksTable() {
   const { data: paymentLinks, isLoading } = useQuery({
@@ -16,17 +17,17 @@ export default function PaymentLinksTable() {
     if (!dateString) return 'Illimité'
     return new Date(dateString).toLocaleDateString('fr-FR')
   }
-
+  var i = 1;
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Référence</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Début</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Expire le</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lien</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -36,15 +37,19 @@ export default function PaymentLinksTable() {
             {paymentLinks?.results.map((link) => (
               <tr key={link.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Link href={`/payments/${link.id}`} className="font-medium text-primary hover:underline">
+                  {i}
+                  {/* <Link href={`/payments/${link.id}`} className="font-medium text-primary hover:underline">
                     {link.id}
-                  </Link>
+                  </Link> */}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {link.amount ? `${link.amount} ${link.currency}` : 'Montant libre'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {formatDate(link.created_at)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  { link.start_date ? formatDate(link.start_date) : '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {
