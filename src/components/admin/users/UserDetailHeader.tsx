@@ -18,7 +18,7 @@ export default function UserDetailHeader({ user }: UserDetailHeaderProps) {
       <div>        
         <div className="flex items-center gap-4">
           <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-100">
-            <User className="h-8 w-8 text-gray-500" />
+            <User className="h-8 w-8 text-[#ee3cee]" />
           </div>
           
           <div>

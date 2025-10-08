@@ -9,7 +9,7 @@ interface UserInfoCardProps {
   user: UserType
 }
 
-export default function UserInfoCard({ user }: UserInfoCardProps) {
+export default function UserInfoCard({ user }: UserInfoCardProps) { 
   return (
     <Card>
       <CardHeader>
@@ -54,7 +54,7 @@ export default function UserInfoCard({ user }: UserInfoCardProps) {
           )}
         </div>
 
-        <div className="border-t pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border-t border-gradiant pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-3">
             <FileText className="h-5 w-5 text-muted-foreground" />
             <div>
@@ -73,12 +73,12 @@ export default function UserInfoCard({ user }: UserInfoCardProps) {
           <div className="flex items-center gap-3">
             <CreditCard className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="text-sm text-muted-foreground">Solde</p>
+              <p className="text-sm text-muted-foreground">Solde mensuel</p>
               <p className="font-medium">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
-                  currency: 'EUR'
-                }).format(101000)}
+                  currency: 'cfa'
+                }).format(user.profile.current_month_usage)}
               </p>
             </div>
           </div>

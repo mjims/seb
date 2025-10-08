@@ -25,6 +25,7 @@ export default function PaymentLinksTable() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Auteur</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Début</th>
@@ -44,6 +45,9 @@ export default function PaymentLinksTable() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {link.amount ? `${link.amount} ${link.currency}` : 'Montant libre'}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {link.merchant ? link.merchant.business_name : link.user.first_name + ' '+link.user.last_name }
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {formatDate(link.created_at)}

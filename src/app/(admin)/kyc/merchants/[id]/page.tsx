@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import KYCDetailHeader from '@/components/admin/kyc/KYCDetailHeader'
 import DocumentViewer from '@/components/admin/kyc/DocumentViewer'
 import ApprovalActions from '@/components/admin/kyc/ApprovalActions'
-import { getKycById } from '@/lib/api-client'
+import { getMerchantsKycById } from '@/lib/api-client'
 
 
 export default async function KYCDetailPage({
@@ -12,7 +12,7 @@ export default async function KYCDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params;
-  const document = await getKycById(id)
+  const document = await getMerchantsKycById(id)
 
   if (!document) return notFound()
 

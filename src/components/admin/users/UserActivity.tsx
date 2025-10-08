@@ -5,18 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, CreditCard, FileText, User } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { UserType } from '@/types/user'
 
 interface UserActivityProps {
-  userId: string
+  user: UserType
 }
 
-export default function UserActivity({ userId }: UserActivityProps) {
+export default function UserActivity({ user }: UserActivityProps) {
   const [activeTab, setActiveTab] = useState<'activity' | 'documents' | 'transactions'>('activity')
 
   // Données mockées - à remplacer par API
   const activities = [
-    { id: '1', type: 'login', date: '2023-11-20T14:45:00Z', description: 'Connexion' },
-    { id: '2', type: 'transaction', date: '2023-11-18T10:30:00Z', description: 'Paiement envoyé - 150,00 €' }
+    { id: '1', type: 'login', date: user?.last_login , description: 'Connexion' },
+    { id: '2', type: 'transactions', date: '2023-11-18T10:30:00Z', description: 'Paiement envoyé - ' }
   ]
 
   return (

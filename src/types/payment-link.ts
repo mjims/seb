@@ -1,4 +1,5 @@
 import type { MerchantType } from '@/types/merchant';
+import { UserType } from './user';
 
 export interface PaymentLinkType {
   id: string;
@@ -11,6 +12,7 @@ export interface PaymentLinkType {
   image: string;
   merchant: MerchantType;
   merchant_id: string;
+  user: UserType;
   start_date?: string;
   end_date?: string;
   buyer_pays_fees?: boolean;

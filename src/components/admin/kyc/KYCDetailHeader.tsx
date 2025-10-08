@@ -30,19 +30,41 @@ export default function KYCDetailHeader({ document }: { document: KycDocumentTyp
               Document {document.document_type.label}
             </h1>
             <div className="flex items-center gap-4 mt-2">
-              <div className="flex items-center text-sm text-muted-foreground">
-                <User className="mr-2 h-4 w-4" />
-                <Link href={`/admin/users/${document.merchant.id}`} className="hover:underline">
-                  {document.merchant.business_name}
-                </Link>
-              </div>
-              <Badge variant={statusMap[document.status].variant}>
-                {statusMap[document.status].label}
-              </Badge>
-              <span className="text-sm text-muted-foreground">
-                Soumis le {new Date(document.uploaded_at).toLocaleDateString()}
-              </span>
+              {document.merchant ? (
+                <>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <User className="mr-2 h-4 w-4" />
+                    <Link href={`/merchants/${document.merchant.id}`} className="hover:underline">
+                      {document.merchant.business_name}
+                    </Link>
+                  </div>
+                  <Badge variant={statusMap[document.status].variant}>
+                    {statusMap[document.status].label}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Soumis le {new Date(document.uploaded_at).toLocaleDateString()}
+                  </span>
+                </>
+              ) : (
+                 <>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <User className="mr-2 h-4 w-4" />
+                    <Link href={`/users/${document.user_id}`} className="hover:underline">
+                      {document.user_id}
+                    </Link>
+                  </div>
+                  <Badge variant={statusMap[document.status].variant}>
+                    {statusMap[document.status].label}
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    Soumis le {new Date(document.uploaded_at).toLocaleDateString()}
+                  </span>
+                </>
+              )}
+            
+              
             </div>
+
           </div>
         </div>
       </div>

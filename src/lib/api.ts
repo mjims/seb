@@ -6,7 +6,7 @@ import type { TransactionListType } from '@/types/transaction'
 import { WithdrawalRequestListType } from '@/types/withdrawal'
 import { AccountSuspensionListType } from '@/types/account-suspension'
 import { P2PType } from '@/types/p2p'
-import { KycDocumentTypeListType } from '@/types/kyc'
+import { KycDocumentTypeListType, KycIndividualListType } from '@/types/kyc'
 import { PaymentLinkListType } from '@/types/payment-link'
 import { HistoricalListType } from '@/types/historical'
 
@@ -55,6 +55,11 @@ export const getP2Ps = async (): Promise<P2PType[]> => {
 // Recupérer les kycs
 export const getKycs = async (): Promise<KycDocumentTypeListType> => {
   const response = await axiosInstance.get('/kyc-documents/')
+  return response.data
+}
+
+export const getIndividualKycs = async (): Promise<KycIndividualListType> => {
+  const response = await axiosInstance.get('/individual-kyc-documents/')
   return response.data
 }
 

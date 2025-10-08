@@ -37,6 +37,38 @@ export const getUserById = async (id: string): Promise<UserType> => {
   return response.data
 }
 
+export const updateUserById = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  // Utilise PUT si ton backend attend tout l'objet. Si PATCH supporté, change en 'patch'.
+  const response = await axiosInstance.put(`/users/${id}/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+// dans lib/api.ts
+export const patchUserById = async (id: string, payload: Partial<UserType>) => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  const response = await axiosInstance.patch(`/users/${id}/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+
 export const getTransactionById = async (id: string): Promise<TransactionType> => {
   
   const cookieStore = await cookies()
@@ -56,7 +88,7 @@ export const getSuspensionById = async (id: string): Promise<AccountSuspensionTy
   const cookieStore = await cookies()
   const token = cookieStore.get('sebpay_access_token')?.value
 
-  const response = await axiosInstance.get(`/account-suspensions/${id}/`, {
+  const response = await axiosInstance.get(`/account-suspensions/${id}/approve/`, {
     headers: {
       Authorization: `JWT ${token}`,
     },
@@ -65,7 +97,7 @@ export const getSuspensionById = async (id: string): Promise<AccountSuspensionTy
   return response.data
 }
 
-export const getKycById = async (id: string): Promise<KycDocumentType> => {
+export const getMerchantsKycById = async (id: string): Promise<KycDocumentType> => {
   
   const cookieStore = await cookies()
   const token = cookieStore.get('sebpay_access_token')?.value
@@ -73,6 +105,83 @@ export const getKycById = async (id: string): Promise<KycDocumentType> => {
   const response = await axiosInstance.get(`/kyc-documents/${id}/`, {
     headers: {
       Authorization: `JWT ${token}`,
+    },
+  })
+
+  return response.data
+}
+
+export const approvedMerchantKycById = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  
+  const response = await axiosInstance.post(`/kyc-documents/${id}/approve/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+export const rejectedMerchantKycById = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  const response = await axiosInstance.post(`/kyc-documents/${id}/reject/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+export const getIndividualsKycById = async (id: string): Promise<KycDocumentType> => {
+  
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  const response = await axiosInstance.get(`/individual-kyc-documents/${id}/`, {
+    headers: {
+      Authorization: `JWT ${token}`,
+    },
+  })
+
+  return response.data
+}
+
+export const approvedIndividualKycById = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  // Utilise PUT si ton backend attend tout l'objet. Si PATCH supporté, change en 'patch'.
+  const response = await axiosInstance.post(`/individual-kyc-documents/${id}/approve/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+export const rejectedIndividualKycById = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  // Utilise PUT si ton backend attend tout l'objet. Si PATCH supporté, change en 'patch'.
+  const response = await axiosInstance.post(`/individual-kyc-documents/${id}/reject/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
     },
   })
 

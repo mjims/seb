@@ -1,6 +1,6 @@
 // app/admin/kyc/page.tsx
 'use client';
-import KYCTable from '@/components/admin/kyc/KYCTable'
+import KYCTable from '@/components/admin/kyc/KYCMerchantTable'
 import { FileText } from 'lucide-react'
 import Link from 'next/link';
 

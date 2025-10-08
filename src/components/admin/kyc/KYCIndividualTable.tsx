@@ -2,12 +2,13 @@
 import Link from 'next/link'
 import KYCStatusBadge from './KYCStatusBadge'
 import { useQuery } from '@tanstack/react-query'
-import { getKycs } from '@/lib/api'
+import { getIndividualKycs, getKycs } from '@/lib/api'
+import ActionButton from './ActionBtn'
 
-export default function KYCTable() {
+export default function IndividualsKYCTable() {
   const { data: documents, isLoading } = useQuery({
     queryKey: ['users'],
-    queryFn: getKycs
+    queryFn: getIndividualKycs
   })
 
   return (
@@ -19,7 +20,7 @@ export default function KYCTable() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th colSpan={3} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -30,21 +31,44 @@ export default function KYCTable() {
           ) :
           documents?.results.map((doc) => (
             <tr key={doc.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{doc.merchant.business_name}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <Link href={`/user/${doc.user_id}`}> {doc.user_id}</Link></td>
               <td className="px-6 py-4 whitespace-nowrap">{doc.document_type.label}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {/* <KYCStatusBadge status={doc?.status} /> */}
+                <KYCStatusBadge status={doc?.status} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {new Date(doc.uploaded_at).toLocaleDateString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Link 
-                  href={`/admin/kyc/${doc.id}`}
+                  href={`${doc.file}`}
+                  target='_blank'
                   className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                 >
-                  Vérifier
+                  Voir
                 </Link>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {doc.status === 'approved' ? (
+                  '-'
+                ): (
+                    <ActionButton docId={doc.id} userType="individual" action="valider" />
+                  
+                )}
+                  
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {doc.status === 'rejected' ? (
+                  '-'
+                ) : (
+                  <ActionButton
+                    docId={doc.id}
+                    userType='individual'
+                    action='rejeter'
+                  />
+                )}
+                
               </td>
             </tr>
           ))}

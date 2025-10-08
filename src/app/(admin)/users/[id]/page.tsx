@@ -5,6 +5,8 @@ import { getUserById } from '@/lib/api-client'
 import { User } from 'lucide-react'
 import Link from 'next/link';
 import { notFound } from 'next/navigation'
+import SuspendButton from '@/components/admin/users/SuspendBtn'
+import ValidateButton from '@/components/admin/users/ValidateBtn'
 
 
 export default async function UserDetailPage({
@@ -26,6 +28,7 @@ export default async function UserDetailPage({
             <User className="w-4 h-4" />
             <span>User</span>
           </div>
+          <div className='route-item'>Dashboard</div>
           <div className='flex space-x-1 items-center'>
             <span>{ user.first_name+' '+user.last_name }</span>
           </div>
@@ -35,15 +38,22 @@ export default async function UserDetailPage({
           <div className="flex items-center">
             <strong>User Infos</strong>
           </div>
-
+          
           <div className="flex items-center space-x-4">
-            {user?.is_active === true && (
+              {user?.profile.kyc_status !=="approved" && (
+                <div>
+                <Link href={`/kyc/${user.id}`} className="border border-(--link-simple-border) p-2 hover:bg-(--link-simple-bg-hover)">
+                  Document(s) KYC
+                </Link>
+              </div>
+              )}
+            {user?.is_active === true ? (
               <div className="btn">
-                <button
-                  className="bg-(image:--side-border) hover:bg-(image:--sebpay-gradient-hover) text-white p-2"
-                >
-                  Suspendre
-                </button>
+                <SuspendButton userId={user.id} />
+              </div>
+            ) : (
+              <div className="btn">
+                <ValidateButton userId={user.id} />
               </div>
             )}
             <div>
@@ -55,12 +65,12 @@ export default async function UserDetailPage({
         </div>
       </div>
       <UserDetailHeader user={user} />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div className="md:col-span-3">
           <UserInfoCard user={user} />
         </div>
-        <div className="md:col-span-1">
-          <UserActivity userId={user.id} />
+        <div className="md:col-span-2">
+          <UserActivity user={user} />
         </div>
       </div>
     </div>

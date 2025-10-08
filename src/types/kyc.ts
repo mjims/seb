@@ -30,6 +30,18 @@ export interface KycDocumentType {
   file: string;
   status: 'pending' | 'approved' | 'rejected';
   uploaded_at: string;
+
+  user_id?: string;
+}
+
+export interface KycIndividualType{
+    id: string;
+    user_id: string;
+    document_type: KycDocumentTypeType
+    file: string;
+    status: 'pending' | 'approved' | 'rejected';
+    uploaded_at: string;
+    rejection_reason: string;
 }
 
 export interface KycDocumentTypeListType {
@@ -37,6 +49,13 @@ export interface KycDocumentTypeListType {
   next: string;
   previous: string;
   results: KycDocumentType[];
+}
+
+export interface KycIndividualListType {
+  count: number;
+  next: string;
+  previous: string;
+  results: KycIndividualType[];
 }
 
 export interface KycDocumentListType {

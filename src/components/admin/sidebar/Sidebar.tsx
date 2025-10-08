@@ -25,9 +25,9 @@ const NAV_ITEMS = [
     label: 'Utilisateurs',
   },
   {
-    href: '/kyc',
+    href: '/kyc/merchants',
     icon: <FileText className="h-5 w-5" />,
-    label: 'KYC (en attente)',
+    label: 'Documents KYC',
   },
   {
     href: '/merchants',
