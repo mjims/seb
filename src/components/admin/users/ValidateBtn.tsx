@@ -17,7 +17,7 @@ export default function ValidateButton({ userId }: Props) {
 
     try {
       setLoading(true)
-      const res = await fetch(`/users/${userId}/activate`, {
+      const res = await fetch(`/api/users/${userId}/activate`, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
       })

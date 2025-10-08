@@ -4,9 +4,12 @@ import { NextResponse } from 'next/server'
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id
+  ctx: RouteContext<'/api/users/[id]/suspend'>) {
+    
+  const { id } = await ctx.params
+  if (!id) {
+    return NextResponse.json({ detail: 'Missing id param' }, { status: 400 })
+  }
   console.log(id)
 
   try {

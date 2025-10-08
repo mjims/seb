@@ -17,7 +17,7 @@ export default function SuspendButton({ userId }: Props) {
 
     try {
       setLoading(true)
-      const res = await fetch(`/users/${userId}/suspend`, {
+      const res = await fetch(`/api/users/${userId}/suspend`, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
       })

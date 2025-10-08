@@ -22,7 +22,7 @@ export default function ActionButton({ docId, userType, action }: Props) {
 
     try {
       setLoading(true)
-      const res = await fetch(`${url+docId}/${page}`, {
+      const res = await fetch(`/api${url+docId}/${page}`, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
       })

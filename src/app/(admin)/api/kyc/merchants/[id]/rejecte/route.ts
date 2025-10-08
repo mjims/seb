@@ -1,17 +1,19 @@
 // app/api/users/[id]/suspend/route.ts
-import { rejectedIndividualKycById, getIndividualsKycById, updateUserById } from '@/lib/api-client'
+import { rejectedMerchantKycById, getMerchantsKycById } from '@/lib/api-client'
 import { NextResponse } from 'next/server'
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id
-  console.log(id)
+  ctx: RouteContext<'/api/kyc/merchants/[id]/rejecte'>) {
+
+  const { id } = await ctx.params
+  if (!id) {
+    return NextResponse.json({ detail: 'Missing id param' }, { status: 400 })
+  }
 
   try {
     // Récupérer l'utilisateur existant (pour PUT complet)
-    const doc = await getIndividualsKycById(id)
+    const doc = await getMerchantsKycById(id)
 
     if (!doc) {
       return NextResponse.json({ detail: 'Document not found' }, { status: 404 })
@@ -24,7 +26,7 @@ export async function POST(
     }
 
     // Si ton backend accepte PATCH, tu pourrais: updateUserById(id, { is_active: false })
-    const updated = await rejectedIndividualKycById(id, approvePayload)
+    const updated = await rejectedMerchantKycById(id, approvePayload)
 
     return NextResponse.json(updated, { status: 200 })
   } catch (err: any) {
