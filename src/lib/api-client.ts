@@ -53,6 +53,20 @@ export const updateUserById = async (id: string, payload: Partial<UserType>): Pr
   return response.data
 }
 
+export const deleteUser = async (id: string): Promise<UserType> => {
+  
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  const response = await axiosInstance.delete(`/users/${id}/`, {
+    headers: {
+      Authorization: `JWT ${token}`,
+    },
+  })
+
+  return response.data
+}
+
 // dans lib/api.ts
 export const patchUserById = async (id: string, payload: Partial<UserType>) => {
   const cookieStore = await cookies()

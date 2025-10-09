@@ -10,7 +10,6 @@ export async function POST(
   if (!id) {
     return NextResponse.json({ detail: 'Missing id param' }, { status: 400 })
   }
-  console.log(id)
 
    try {
     const updated = await patchMerchantById(id, { verification_status: 'approved' })

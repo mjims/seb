@@ -53,7 +53,7 @@ export default function ActionButton({ docId, userType, action }: Props) {
         {action === "valider" ? (
              loading ? 'Activation...' : 'Valider'
         ) : (
-            loading ? ('Rejection...') : ('Rejeter')
+            loading ? ('Rejection...') : (<span className='text-[#fc5757] text-[14px] font-[roboto-condensed]'>Rejeter</span>)
         )}
         
     </button>

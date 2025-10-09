@@ -17,6 +17,12 @@ export const getUsers = async (): Promise<UserListType> => {
 }
 
 // Récupérer la liste des utilisateurs
+export const deleteUser = async (id: string): Promise<UserType> => {
+  const response = await axiosInstance.delete(`/users/${id}/`)
+  return response.data
+}
+
+// Récupérer la liste des utilisateurs
 export const getUserMe = async (): Promise<UserType> => {
   const response = await axiosInstance.get('/users/me/')
   return response.data

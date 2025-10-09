@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getMerchants } from '@/lib/api'
 import Link from 'next/link'
+import { Eye } from 'lucide-react';
 
 
 
@@ -54,7 +55,7 @@ export default function MerchantsTable() {
                     href={`/merchants/${merchant.id}`}
                     className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                   >
-                    Gérer
+                    <Eye className='w-4 h-4'/>
                   </Link>
                 </td>
               </tr>

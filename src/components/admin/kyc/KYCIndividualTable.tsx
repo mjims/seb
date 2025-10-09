@@ -4,6 +4,7 @@ import KYCStatusBadge from './KYCStatusBadge'
 import { useQuery } from '@tanstack/react-query'
 import { getIndividualKycs, getKycs } from '@/lib/api'
 import ActionButton from './ActionBtn'
+import { Eye } from 'lucide-react'
 
 export default function IndividualsKYCTable() {
   const { data: documents, isLoading } = useQuery({
@@ -46,7 +47,7 @@ export default function IndividualsKYCTable() {
                   target='_blank'
                   className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                 >
-                  Voir
+                  <Eye className='w-4 h-4'/>
                 </Link>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">

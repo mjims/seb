@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
 import { formatDate } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Eye } from 'lucide-react'
 
 interface SuspensionsTableProps {
   liftSuspension?: (id: string) => void
@@ -75,7 +76,7 @@ export default function SuspensionsTable({
                     href={`/suspensions/${suspension.id}`}
                     className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                   >
-                    Voir
+                    <Eye className='w-4 h-4'/>
                   </Link>
                 </td>
               </tr>
