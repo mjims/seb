@@ -51,7 +51,7 @@ export default function SuspensionDetailClient({
                 title="Retour à suspensions"
                 className="border border-(--link-simple-border) p-2 hover:bg-(--link-simple-bg-hover)"
                 
-              />
+              >Retour</Link>
             </div>
           </div>
         </div>

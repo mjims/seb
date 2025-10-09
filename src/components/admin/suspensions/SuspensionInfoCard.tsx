@@ -1,7 +1,8 @@
 // components/admin/Suspensions/SuspensionInfoCard.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { User, UserX, Calendar, Shield, FileText } from 'lucide-react'
+import { User, UserX, Calendar, Shield, FileText, AlertTriangle } from 'lucide-react'
 import { format } from 'date-fns'
+import { DateFormat } from '@/shared/config';
 
 interface SuspensionInfoCardProps {
   suspension: {
@@ -52,12 +53,12 @@ export default function SuspensionInfoCard({ suspension }: SuspensionInfoCardPro
           </div>
         </div>
 
-        <div className="border-t pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border-t border-gradiant pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-3">
             <Calendar className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm text-muted-foreground">Date de suspension</p>
-              <p>{format(new Date(suspension.created_at), 'PPPp')}</p>
+              <p>{format(new Date(suspension.created_at), 'yyy-MM-dd HH:mm')}</p>
             </div>
           </div>
 
@@ -66,7 +67,7 @@ export default function SuspensionInfoCard({ suspension }: SuspensionInfoCardPro
               <UserX className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-sm text-muted-foreground">Levée le</p>
-                <p>{format(new Date(suspension.resolved_at), 'PPPp')}</p>
+                <p>{format(new Date(suspension.resolved_at), 'yyy-MM-ddd HH:mm')}</p>
                 {suspension.resolved_by_name && (
                   <p className="text-sm text-muted-foreground">Par {suspension.resolved_by_name}</p>
                 )}
@@ -75,9 +76,9 @@ export default function SuspensionInfoCard({ suspension }: SuspensionInfoCardPro
           )}
         </div>
 
-        <div className="border-t pt-4">
+        <div className="border-t border-gradiant pt-4">
           <div className="flex items-start gap-3">
-            <FileText className="h-5 w-5 text-muted-foreground mt-0.5" />
+            <AlertTriangle className="mr-2  text-[#ffb219] h-5 w-5 text-muted-foreground mt-0.5" />
             <div>
               <p className="text-sm text-muted-foreground">Raison</p>
               <p className="font-medium">{suspension.reason}</p>
@@ -86,7 +87,7 @@ export default function SuspensionInfoCard({ suspension }: SuspensionInfoCardPro
         </div>
 
         {suspension.description && (
-          <div className="border-t pt-4">
+          <div className="border-t border-gradiant pt-4">
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>

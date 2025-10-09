@@ -88,7 +88,7 @@ export const getSuspensionById = async (id: string): Promise<AccountSuspensionTy
   const cookieStore = await cookies()
   const token = cookieStore.get('sebpay_access_token')?.value
 
-  const response = await axiosInstance.get(`/account-suspensions/${id}/approve/`, {
+  const response = await axiosInstance.get(`/account-suspensions/${id}/`, {
     headers: {
       Authorization: `JWT ${token}`,
     },
@@ -133,6 +133,20 @@ export const rejectedMerchantKycById = async (id: string, payload: Partial<UserT
 
   console.log(payload)
   const response = await axiosInstance.post(`/kyc-documents/${id}/reject/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+export const patchMerchantById = async (id: string, payload: Partial<MerchantType>) => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  const response = await axiosInstance.patch(`/merchants/${id}/`, payload, {
     headers: {
       Authorization: `JWT ${token}`,
       'Content-Type': 'application/json',

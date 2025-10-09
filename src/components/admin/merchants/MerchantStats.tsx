@@ -31,7 +31,7 @@ export default function MerchantStats({ merchantId }: MerchantStatsProps) {
       <CardHeader className="pb-4">
         <CardTitle className="flex justify-between items-center">
           <span>Statistiques</span>
-          <div className="flex gap-1">
+          {/* <div className="flex gap-1">
             <Button 
               variant={timeRange === '7d' ? 'default' : 'ghost'} 
               size="sm"
@@ -53,11 +53,14 @@ export default function MerchantStats({ merchantId }: MerchantStatsProps) {
             >
               90j
             </Button>
-          </div>
+          </div> */}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
+
+
+        <div className='bg-amber-200 p-4 border border-[#ccc] text-center italic'>Fonctionnalité à intégré</div>
+        {/* <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <DollarSign className="h-5 w-5 text-muted-foreground" />
             <div>
@@ -104,9 +107,9 @@ export default function MerchantStats({ merchantId }: MerchantStatsProps) {
               <p className="font-medium">{stats.chargebackRate}%</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <Button variant="outline" className="w-full mt-4">
+        <Button variant="outline" className="w-full mt-4 bg-amber-200">
           Voir le rapport complet
         </Button>
       </CardContent>

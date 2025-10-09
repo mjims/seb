@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { SuspendMerchantModal } from './SuspendMerchantModal'
 import { resolveSuspension, suspendMerchant } from '@/lib/api'
 import { MerchantType } from '@/types/merchant'
+import { useRouter } from 'next/navigation'
 
 interface MerchantDetailHeaderProps {
   merchant: MerchantType
@@ -14,6 +15,8 @@ interface MerchantDetailHeaderProps {
 
 export default function MerchantDetailHeader({ merchant }: MerchantDetailHeaderProps) {
   const [isSuspendModalOpen, setIsSuspendModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const statusMap = {
     approved: { label: 'Vérifié', variant: 'success' as const },
@@ -40,6 +43,34 @@ export default function MerchantDetailHeader({ merchant }: MerchantDetailHeaderP
     } catch (error) {
       console.error('Failed to suspend merchant:', error)
       throw error
+    }
+  }
+
+  const handleSuspend = async () => {
+    const ok = window.confirm(`Voulez-vous vraiment approver ce document ?`)
+    if (!ok) return
+
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/merchants/${merchant.id}/approve`, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+      })
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert(`Impossible d'approuver le marchant: ${err?.detail || res.statusText}`)
+        return
+      }
+
+      // Succès — refresh la page pour recharger les données
+      router.refresh()
+      alert('Le marchant apprové avec succès.')
+    } catch (e) {
+      console.error(e)
+      alert("Erreur réseau lors de l'action.") 
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -114,7 +145,13 @@ export default function MerchantDetailHeader({ merchant }: MerchantDetailHeaderP
                 </Button>
               )}
               {merchant.verification_status == 'pending' && (
-                <Button className="bg-(image:--side-border) hover:bg-(image:--sebpay-gradient-hover) text-white p-2">Approuver le marchant</Button>
+                <Button
+                  onClick={handleSuspend}
+                  disabled={loading}
+                  className="bg-(image:--side-border) hover:bg-(image:--sebpay-gradient-hover) text-white p-2"
+                >
+                  {loading ? 'Approbation...' : 'Approuver le marchant'}
+                </Button>
               )}
               {merchant.verification_status == 'rejected' && (
                 <Button className="bg-(image:--side-border) hover:bg-(image:--sebpay-gradient-hover) text-white p-2">Approuver le marchant</Button>

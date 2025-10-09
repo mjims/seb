@@ -11,6 +11,8 @@ import { AppCookies } from '@/shared/config'
 import { Endpoints } from '@/shared/endpoints'
 import { useAuthStore } from '@/stores/user'
 
+const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -33,7 +35,7 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const response = await axiosInstance.post('http://localhost:8000/'+Endpoints.JWT_CREATE, {
+      const response = await axiosInstance.post(baseURL+Endpoints.JWT_CREATE, {
         email,
         password,
       })

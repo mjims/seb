@@ -3,6 +3,8 @@ import { getAccountSuspensions } from '@/lib/api'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
+import { formatDate } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 
 interface SuspensionsTableProps {
   liftSuspension?: (id: string) => void
@@ -31,6 +33,7 @@ export default function SuspensionsTable({
             <th className='text-left py-3 whitespace-nowrap'>Raison</th>
             <th className='text-left py-3 whitespace-nowrap'>Supendu le</th>
             <th className='text-left py-3 whitespace-nowrap'>Suspendu par</th>
+            <th className='text-left py-3 whitespace-nowrap'>Status</th>
             <th className='text-left py-3 whitespace-nowrap'>Action</th>
           </tr>
         </thead>
@@ -49,8 +52,14 @@ export default function SuspensionsTable({
                 <td className="py-2 whitespace-nowrap space-x-2 px-2 text-center">{numero++}</td>
                 <td className="py-2 whitespace-nowrap space-x-2">{suspension.merchant_name}</td>
                 <td className="py-2 whitespace-nowrap space-x-2">{suspension.reason}</td>
-                <td className="py-2 whitespace-nowrap space-x-2">{suspension.created_at}</td>
+                <td className="py-2 whitespace-nowrap space-x-2">{formatDate(suspension.created_at)}</td>
                 <td className="py-2 whitespace-nowrap space-x-2">{suspension.suspended_by_name}</td>
+                <td className="py-2 whitespace-nowrap space-x-2">
+                  {suspension.status==="active" && (<Badge variant='destructive'>Suspendu</Badge>)}
+                  {suspension.status==="resolved" && (<Badge variant='success'>Résolu</Badge>)}
+                  {suspension.status==="escalated" && (<Badge variant='pending'>Escalated</Badge>)}
+                  
+                </td>
                 <td className="py-2 whitespace-nowrap space-x-2">
                   {suspension.status === 'active' && liftSuspension && (
                     <Button 
@@ -66,7 +75,7 @@ export default function SuspensionsTable({
                     href={`/suspensions/${suspension.id}`}
                     className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                   >
-                    Détails
+                    Voir
                   </Link>
                 </td>
               </tr>

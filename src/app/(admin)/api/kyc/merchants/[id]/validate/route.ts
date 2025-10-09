@@ -13,7 +13,7 @@ export async function POST(
   console.log(id)
 
   try {
-    // Récupérer l'utilisateur existant (pour PUT complet)
+    // Récupérer le doc existant (pour PUT complet)
     const doc = await getMerchantsKycById(id)
 
     if (!doc) {

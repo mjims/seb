@@ -51,7 +51,7 @@ export default function SuspensionDetailHeader({ suspension }: SuspensionDetailH
               
               <div className="flex items-center text-sm text-muted-foreground">
                 <Calendar className="mr-2 h-4 w-4" />
-                {format(new Date(suspension.created_at), 'PPP')}
+                {format(new Date(suspension.created_at), 'PPP',)}
               </div>
               
               <Badge variant={suspension.status === 'active' ? 'destructive' : 'success'}>
@@ -59,8 +59,8 @@ export default function SuspensionDetailHeader({ suspension }: SuspensionDetailH
               </Badge>
               
               <div className="flex items-center text-sm text-muted-foreground">
-                <AlertTriangle className="mr-2 h-4 w-4" />
-                {suspension.reason}
+                <AlertTriangle className="mr-2 h-4 w-4 text-[#ffb219]" />
+                <span className='text-[#f99d20]'>{suspension.reason}</span>
               </div>
             </div>
           </div>
