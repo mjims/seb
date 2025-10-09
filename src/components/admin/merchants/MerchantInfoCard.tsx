@@ -38,7 +38,7 @@ export default function MerchantInfoCard({ merchant }: MerchantInfoCardProps) {
           <div className="flex items-center gap-3">
             <Calendar className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="text-sm text-muted-foreground">Date d'inscription</p>
+              <p className="text-sm text-muted-foreground">Date d&apos;inscription</p>
               <p>{format(new Date(merchant.created_at), 'PPP')}</p>
             </div>
           </div>

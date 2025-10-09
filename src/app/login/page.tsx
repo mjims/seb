@@ -11,9 +11,9 @@ import { AppCookies } from '@/shared/config'
 import { Endpoints } from '@/shared/endpoints'
 import { useAuthStore } from '@/stores/user'
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export default function LoginPage() {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -23,7 +23,7 @@ export default function LoginPage() {
   // Vérification si l'utilisateur est déjà connecté
   useEffect(() => {
     const accessToken = Cookies.get(AppCookies.ACCESS_TOKEN)
-    if (accessToken) {
+    if (accessToken) { 
       router.push('/dashboard')
     }
   }, [])
