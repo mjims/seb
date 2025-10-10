@@ -1,7 +1,7 @@
 // lib/api.ts
 import { axiosInstance } from './axios'
 import type { UserListType, UserType } from '@/types/user'
-import type { MerchantListType } from '@/types/merchant'
+import type { MerchantListType, MerchantType } from '@/types/merchant'
 import type { TransactionListType } from '@/types/transaction'
 import { WithdrawalRequestListType } from '@/types/withdrawal'
 import { AccountSuspensionListType } from '@/types/account-suspension'
@@ -33,6 +33,14 @@ export const getMerchants = async (): Promise<MerchantListType> => {
   const response = await axiosInstance.get('/merchants/')
   return response.data
 }
+
+export const getMerchantById = async (id: string): Promise<MerchantType> => {
+
+  const response = await axiosInstance.get(`/merchants/${id}/`)
+
+  return response.data
+}
+
 
 // Récupérer la liste des transactions
 export const getTransactions = async (): Promise<TransactionListType> => {

@@ -1,6 +1,8 @@
 'use client'
-import { getWithdrawalRequests } from '@/lib/api'
+import { getMerchantById, getWithdrawalRequests } from '@/lib/api'
 import { useQuery } from '@tanstack/react-query'
+import { formatDate } from 'date-fns'
+import { Eye } from 'lucide-react'
 import Link from 'next/link'
 
 
@@ -37,11 +39,17 @@ export default function WithdrawalsTable() {
           )}
           {withdrawals?.results.map((withdrawal) => (
             <tr key={withdrawal.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.merchant}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.amount} €</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.bank_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.account_number}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
+                <MerchantNameCell merchantId={withdrawal.merchant} />
+              </td>
+              <td className="px-6 py-4">{
+                new Intl.NumberFormat('fr-FR', {
+                  style: 'currency',
+                  currency: 'XOF',
+                }).format(withdrawal.amount)}</td>
+              <td className="px-6 py-4">{withdrawal.bank_name}</td>
+              <td className="px-6 py-4">{withdrawal.account_number}</td>
+              <td className="px-6 py-4">
                 <span className={`px-2 py-1 rounded-full text-xs ${
                   withdrawal.status === 'approved' ? 'bg-green-100 text-green-800' :
                   withdrawal.status === 'rejected' ? 'bg-red-100 text-red-800' :
@@ -51,18 +59,18 @@ export default function WithdrawalsTable() {
                    withdrawal.status === 'rejected' ? 'Rejeté' : 'En attente'}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {new Date(withdrawal.created_at).toLocaleString()}
+              <td className="px-6 py-4">
+                { formatDate(new Date(withdrawal.created_at), 'dd MMM yyy à HH:mm')}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {withdrawal.processed_at ? new Date(withdrawal.created_at).toLocaleString() : '-'}
+              <td className="px-6 py-4">
+                {withdrawal.processed_at ? formatDate(new Date(withdrawal.processed_at), 'dd MMM yyy à HH:mm') : '-'}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
                 <Link 
                   href={`/withdrawals/${withdrawal.id}`}
                   className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                 >
-                  Gérer
+                  <Eye className='w-4 h-4'/>
                 </Link>
               </td>
             </tr>
@@ -74,71 +82,127 @@ export default function WithdrawalsTable() {
 }
 
 
+function MerchantNameCell({ merchantId }: { merchantId: string }) {
+  const { data: merchant, isLoading } = useQuery({
+    queryKey: ['merchant', merchantId],
+    queryFn: () => getMerchantById(String(merchantId)),
+    enabled: !!merchantId, // évite les appels inutiles
+  })
+
+  if (isLoading) return <span className="text-gray-400 text-xs">Chargement...</span>
+  if (!merchant) return <span className="text-gray-400 text-xs">Inconnu</span>
+
+  return (
+    <span>
+      {merchant.business_name
+        ? `${merchant.business_name}`
+        : 'N/A'}
+    </span>
+  )
+}
+
 export function WithdrawalsPendingTable() {
   const { data: withdrawals, isLoading } = useQuery({
     queryKey: ['withdrawals'],
-    queryFn: getWithdrawalRequests
+    queryFn: getWithdrawalRequests,
   })
 
-  const pendingWithdrawals = withdrawals?.results.filter(m => m.status === "pending") || [];
+  const pendingWithdrawals =
+    withdrawals?.results.filter((m) => m.status === 'pending') || []
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="bg-white rounded-lg shadow max-w-[100%]">
+      <table className="table-fixed w-full">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Marchant</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom de compte</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">N° Compte</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fait le</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Validé le</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Marchand
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Montant
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Nom de compte
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              N° Compte
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Statut
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Fait le
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          { isLoading ? (
+          {isLoading ? (
             <tr>
-              <td colSpan={8} className="text-center py-4">Chargement...</td>
+              <td colSpan={8} className="text-center py-4">
+                Chargement...
+              </td>
             </tr>
-          ) : pendingWithdrawals?.length===0 && (
+          ) : pendingWithdrawals?.length === 0 ? (
             <tr>
-              <td colSpan={8} className='px-6 py-5 text-center text-xs font-medium text-gray-500'>Aucune données disponible</td>
+              <td
+                colSpan={8}
+                className="px-6 py-5 text-center text-xs font-medium text-gray-500"
+              >
+                Aucune demande de retrait en attente
+              </td>
+            </tr>
+          ) : (
+            pendingWithdrawals.map((withdrawal) => (
+              <tr key={withdrawal.id}>
+                <td className="px-6 py-4 ">
+                  <MerchantNameCell merchantId={withdrawal.merchant} />
+                </td>
+                <td className="px-6 py-4 ">
+                  {new Intl.NumberFormat('fr-FR', {
+                    style: 'currency',
+                    currency: 'XOF',
+                  }).format(withdrawal.amount)}
+                </td>
+                <td className="px-6 py-4">
+                  {withdrawal.bank_name}
+                </td>
+                <td className="px-6 py-4 ">
+                  {withdrawal.account_number}
+                </td>
+                <td className="px-6 py-4 ">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      withdrawal.status === 'approved'
+                        ? 'bg-green-100 text-green-800'
+                        : withdrawal.status === 'rejected'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}
+                  >
+                    {withdrawal.status === 'approved'
+                      ? 'Traité'
+                      : withdrawal.status === 'rejected'
+                      ? 'Rejeté'
+                      : 'En attente'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 ">
+                  { formatDate(new Date(withdrawal.created_at), 'dd MMM yyy à HH:mm').toLocaleString()}
+                </td>
+                <td className="px-6 py-4 ">
+                  <Link
+                    href={`/withdrawals/${withdrawal.id}`}
+                    className="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Link>
+                </td>
               </tr>
+            ))
           )}
-          {pendingWithdrawals?.map((withdrawal) => (
-            <tr key={withdrawal.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.merchant}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.amount} €</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.bank_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.account_number}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 py-1 rounded-full text-xs ${
-                  withdrawal.status === 'approved' ? 'bg-green-100 text-green-800' :
-                  withdrawal.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                  'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {withdrawal.status === 'approved' ? 'Traité' : 
-                   withdrawal.status === 'rejected' ? 'Rejeté' : 'En attente'}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {new Date(withdrawal.created_at).toLocaleString()}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {withdrawal.processed_at ? new Date(withdrawal.created_at).toLocaleString() : '-'}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <Link 
-                  href={`/withdrawals/${withdrawal.id}`}
-                  className="text-blue-600 hover:text-blue-900 text-sm font-medium"
-                >
-                  Gérer
-                </Link>
-              </td>
-            </tr>
-          ))}
         </tbody>
       </table>
     </div>
@@ -180,11 +244,17 @@ export function WithdrawalsApprovedTable() {
           )}
           {approvedWithdrawals?.map((withdrawal) => (
             <tr key={withdrawal.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.merchant}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.amount} €</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.bank_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.account_number}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
+                <MerchantNameCell merchantId={withdrawal.merchant} />
+              </td>
+              <td className="px-6 py-4">{
+                new Intl.NumberFormat('fr-FR', {
+                  style: 'currency',
+                  currency: 'XOF',
+                }).format(withdrawal.amount)}</td>
+              <td className="px-6 py-4">{withdrawal.bank_name}</td>
+              <td className="px-6 py-4">{withdrawal.account_number}</td>
+              <td className="px-6 py-4">
                 <span className={`px-2 py-1 rounded-full text-xs ${
                   withdrawal.status === 'approved' ? 'bg-green-100 text-green-800' :
                   withdrawal.status === 'rejected' ? 'bg-red-100 text-red-800' :
@@ -194,18 +264,18 @@ export function WithdrawalsApprovedTable() {
                    withdrawal.status === 'rejected' ? 'Rejeté' : 'En attente'}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {new Date(withdrawal.created_at).toLocaleString()}
+              <td className="px-6 py-4">
+                { formatDate(new Date(withdrawal.created_at), 'dd MMM yyy à HH:mm')}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {withdrawal.processed_at ? new Date(withdrawal.created_at).toLocaleString() : '-'}
+              <td className="px-6 py-4">
+                {withdrawal.processed_at ? formatDate(new Date(withdrawal.processed_at), 'dd MMM yyy à HH:mm') : '-'}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
                 <Link 
                   href={`/withdrawals/${withdrawal.id}`}
                   className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                 >
-                  Gérer
+                  <Eye className="w-4 h-4" />
                 </Link>
               </td>
             </tr>
@@ -235,7 +305,7 @@ export function WithdrawalsRejectedTable() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">N° Compte</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fait le</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Validé le</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rejeté le</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
           </tr>
         </thead>
@@ -251,11 +321,17 @@ export function WithdrawalsRejectedTable() {
           )}
           {rejectedWithdrawals?.map((withdrawal) => (
             <tr key={withdrawal.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.merchant}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.amount} €</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.bank_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{withdrawal.account_number}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
+                <MerchantNameCell merchantId={withdrawal.merchant} />
+              </td>
+              <td className="px-6 py-4">{
+                new Intl.NumberFormat('fr-FR', {
+                  style: 'currency',
+                  currency: 'XOF',
+                }).format(withdrawal.amount)}</td>
+              <td className="px-6 py-4">{withdrawal.bank_name}</td>
+              <td className="px-6 py-4">{withdrawal.account_number}</td>
+              <td className="px-6 py-4">
                 <span className={`px-2 py-1 rounded-full text-xs ${
                   withdrawal.status === 'approved' ? 'bg-green-100 text-green-800' :
                   withdrawal.status === 'rejected' ? 'bg-red-100 text-red-800' :
@@ -265,18 +341,18 @@ export function WithdrawalsRejectedTable() {
                    withdrawal.status === 'rejected' ? 'Rejeté' : 'En attente'}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {new Date(withdrawal.created_at).toLocaleString()}
+              <td className="px-6 py-4">
+                { formatDate(new Date(withdrawal.created_at), 'dd MMM yyy à HH:mm')}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {withdrawal.processed_at ? new Date(withdrawal.created_at).toLocaleString() : '-'}
+              <td className="px-6 py-4">
+                {withdrawal.processed_at ? formatDate(new Date(withdrawal.processed_at), 'dd MMM yyy à HH:mm') : '-'}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
                 <Link 
                   href={`/withdrawals/${withdrawal.id}`}
                   className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                 >
-                  Gérer
+                  <Eye className="w-4 h-4" />
                 </Link>
               </td>
             </tr>

@@ -42,7 +42,6 @@ export const updateUserById = async (id: string, payload: Partial<UserType>): Pr
   const token = cookieStore.get('sebpay_access_token')?.value
 
   console.log(payload)
-  // Utilise PUT si ton backend attend tout l'objet. Si PATCH supporté, change en 'patch'.
   const response = await axiosInstance.put(`/users/${id}/`, payload, {
     headers: {
       Authorization: `JWT ${token}`,
@@ -67,7 +66,6 @@ export const deleteUser = async (id: string): Promise<UserType> => {
   return response.data
 }
 
-// dans lib/api.ts
 export const patchUserById = async (id: string, payload: Partial<UserType>) => {
   const cookieStore = await cookies()
   const token = cookieStore.get('sebpay_access_token')?.value
@@ -230,5 +228,39 @@ export const getWithdrawalById = async (id: string): Promise<WithdrawalRequestTy
   return response.data
 }
 
+
+
+export const approvedWithdrawal = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  
+  const response = await axiosInstance.post(`/withdrawal-requests/${id}/approve/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
+
+
+export const rejectWithdrawal = async (id: string, payload: Partial<UserType>): Promise<UserType> => {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('sebpay_access_token')?.value
+
+  console.log(payload)
+  
+  const response = await axiosInstance.post(`/withdrawal-requests/${id}/reject/`, payload, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  return response.data
+}
 
 

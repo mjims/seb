@@ -3,12 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Banknote, CreditCard, User, FileText, Calendar, Clock } from 'lucide-react'
 import { format } from 'date-fns'
 import { WithdrawalRequestType } from '@/types/withdrawal'
+import { MerchantType } from '@/types/merchant'
 
 interface WithdrawalInfoCardProps {
-  withdrawal: WithdrawalRequestType
+  withdrawal: WithdrawalRequestType,
+  merchant: MerchantType
 }
 
-export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardProps) {
+export default function WithdrawalInfoCard({ withdrawal, merchant }: WithdrawalInfoCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -23,7 +25,7 @@ export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardPro
               <p className="font-medium">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
-                  currency: "fcfa"
+                  currency: "xof"
                 }).format(withdrawal.amount)}
               </p>
             </div>
@@ -36,7 +38,7 @@ export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardPro
               <p className="font-medium">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
-                  currency: "fcfa"
+                  currency: "xof"
                 }).format(withdrawal.amount)}
               </p>
             </div>
@@ -48,7 +50,7 @@ export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardPro
             <User className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm text-muted-foreground">Demandé par</p>
-              <p className="font-medium">{withdrawal.merchant}</p>
+              <p className="font-medium">{merchant.business_name}</p>
             </div>
           </div>
 
@@ -67,7 +69,7 @@ export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardPro
             <Calendar className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm text-muted-foreground">Date de demande</p>
-              <p>{format(new Date(withdrawal.created_at), 'PPPp')}</p>
+              <p>{format(new Date(withdrawal.created_at), 'dd MMM yyy à HH:mm')}</p>
             </div>
           </div>
 
@@ -76,7 +78,7 @@ export default function WithdrawalInfoCard({ withdrawal }: WithdrawalInfoCardPro
               <Clock className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-sm text-muted-foreground">Date de traitement</p>
-                <p>{format(new Date(withdrawal.processed_at), 'PPPp')}</p>
+                <p>{format(new Date(withdrawal.processed_at), 'dd MMM yyy à HH:mm')}</p>
               </div>
             </div>
           )}

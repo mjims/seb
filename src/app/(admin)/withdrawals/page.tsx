@@ -16,11 +16,14 @@ export default function WithdrawalsPage() {
         </div>
         <div className="dash-header flex justify-between p-4 bg-white">
           <div className="flex items-center">
-            <strong>Demandes</strong>
+            <strong>Demandes en attente</strong>
           </div>
           <div className="flex items-center space-x-4">
             <div className="btn">
               <Link href="/withdrawals/all" className="bg-(image:--side-border) hover:bg-(image:--sebpay-gradient-hover) text-white p-2">Historiques</Link>
+            </div>
+            <div className="btn">
+              <Link href="/withdrawals/rejected" className="border border-(--link-simple-border) p-2 hover:bg-(--link-simple-bg-hover)">Retraits rejetés</Link>
             </div>
             <div className="">
               <Link href="/withdrawals/approved" className="border border-(--link-simple-border) p-2 hover:bg-(--link-simple-bg-hover)">Retraits approuvés</Link>

@@ -15,7 +15,7 @@ export default function WithdrawalsPage() {
         </div>
         <div className="dash-header flex justify-between p-4 bg-white">
           <div className="flex items-center">
-            <strong>Demandes</strong>
+            <strong>Toute les demandes</strong>
           </div>
           <div className="flex items-center space-x-4">
             <div className="btn">

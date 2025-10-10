@@ -117,13 +117,13 @@ export default function LoginPage() {
           background-color: rgba(155, 44, 107, 0.9);
         }
         input{
-        outline: none;
-        border: 1px solid #ccc;
-        transition: border-color 0.3s ease;
+          outline: none;
+          border: 1px solid #ccc;
+          transition: border-color 0.3s ease;
         }
         input:focus {
           border-color: rgb(232, 82, 77);
-        }       
+        }
 
       `}</style>
     </div>
